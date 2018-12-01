@@ -10,7 +10,7 @@ const promisify = require("es6-promisify");
 const flash = require("connect-flash");
 const expressValidator = require("express-validator");
 const routes = require("./routes/index");
-const helpers = require("./helpers");
+const helpers = require("../helpers");
 const errorHandlers = require("./handlers/errorHandlers");
 
 // create our Express app
@@ -49,13 +49,23 @@ app.use(passport.session());
 app.use(flash());
 
 // pass variables to our templates + all requests
-app.use((req, res, next) => {
-  res.locals.h = helpers;
-  res.locals.flashes = req.flash();
-  res.locals.user = req.user || null;
-  res.locals.currentPath = req.path;
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.h = helpers;
+//   res.locals.flashes = req.flash();
+//   res.locals.user = req.user || null;
+//   res.locals.currentPath = req.path;
+//   next();
+// });
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 // promisify some callback based APIs
 app.use((req, res, next) => {
