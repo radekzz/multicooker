@@ -4,14 +4,16 @@ This is a recipe website showing recipes perfect for preparing in the multicooke
 
 ## To get started
 
-Step 1
+Step 1 - Do this in both the root directory and the client folder
 
 ```
 npm install
 ```
 
-Step 2
+Step 2 - On the root directory
 
 ```
-npm start
+npm run dev
 ```
+
+This will start the express server and the react-scripts in the client folder all at the same time!
