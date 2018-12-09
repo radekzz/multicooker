@@ -8,5 +8,6 @@ exports.addRecipe = (req, res) => {
 }
 
 exports.createRecipe = (req,res) => {
+  console.log(req.body);
   res.json(req.body);
 }
