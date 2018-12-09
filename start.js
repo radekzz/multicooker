@@ -4,6 +4,7 @@ const config = require('./src/config/config');
 // import environmental variables from our variables.env file
 require("dotenv").config({ path: "variables.env" });
 
+
 // Connect to our Database and handle any bad connections
 mongoose.connect(config.mongo_uri,
   {
@@ -14,6 +15,10 @@ mongoose.connect(config.mongo_uri,
   })
   .then(() => console.log('----- connected to db'))
   .catch(err => console.log(err));
+
+// Importing all of our models
+
+require('./src/models/Recipes');
 
 // Start the app
 const app = require("./src/app");
