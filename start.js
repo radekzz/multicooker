@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const config = require('./src/config/config');
 
 // import environmental variables from our variables.env file
 require("dotenv").config({ path: "variables.env" });
 
 // Connect to our Database and handle any bad connections
-mongoose.connect(process.env.DATABASE,
+mongoose.connect(config.mongo_uri,
   {
     keepAlive: 1,
     connectTimeoutMS: 30000,
