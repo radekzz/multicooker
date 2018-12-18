@@ -1,19 +1,12 @@
-# Multicooker
+﻿# MERN - CRUD
 
-This is a recipe website showing recipes perfect for preparing in the multicooker.
+MongoExpressReactNode - CreateReadUpdateDelete boilerplate
 
-## To get started
+# How to start
 
-Step 1 - Do this in both the root directory and the client folder
+ 1. Start **mongodb** service
+ 2. in *root* folder run '**yarn install**' and run '**yarn start**'
+ 4. in */api/* folder run '**yarn install**' and run '**nodemon server**'
 
-```
-npm install
-```
 
-Step 2 - On the root directory
-
-```
-npm run dev
-```
-
-This will start the express server and the react-scripts in the client folder all at the same time!
+Reference: https://appdividend.com/2018/11/11/react-crud-example-mern-stack-tutorial/
