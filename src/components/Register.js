@@ -19,8 +19,8 @@ class Register extends Component {
         }
     }
     handleClick(event) {
+        event.preventDefault();
         var apiBaseUrl = "http://localhost:4000/users/";
-        console.log("values", this.state.username, this.state.paypal, this.state.email, this.state.password, this.state.referral, this.state.money);
         //To be done:check for empty values before hitting submit
         var self = this;
         var payload = {
@@ -34,17 +34,10 @@ class Register extends Component {
         axios.post(apiBaseUrl + '/register', payload)
             .then(function (response) {
                 console.log(response);
-                if (response.data.code == 200) {
-                    //  console.log("registration successfull");
-                    var loginscreen = [];
-                    loginscreen.push(<Login parentContext={this} />);
-                    var loginmessage = "Not Registered yet.Go to registration";
-                    self.props.parentContext.setState({
-                        loginscreen: loginscreen,
-                        loginmessage: loginmessage,
-                        buttonLabel: "Register",
-                        isLogin: true
-                    });
+                if (response.status == 200) {
+                    console.log("Registration successfull");
+                } else {
+                    console.log("Username already exist");
                 }
             })
             .catch(function (error) {
@@ -56,11 +49,12 @@ class Register extends Component {
         return (
             <div>
                 <MuiThemeProvider>
-                    <div>
+                    <form onSubmit={(event) => this.handleClick(event)}>
                         <AppBar
                             title="Register"
                         />
                         <TextField
+                            required
                             hintText="Enter your username"
                             type="text"
                             floatingLabelText="Username"
@@ -68,6 +62,7 @@ class Register extends Component {
                         />
                         <br />
                         <TextField
+                            required
                             hintText="Enter your Email"
                             type="email"
                             floatingLabelText="Email"
@@ -75,6 +70,7 @@ class Register extends Component {
                         />
                         <br />
                         <TextField
+                            required
                             type="password"
                             hintText="Enter your Password"
                             floatingLabelText="Password"
@@ -88,8 +84,8 @@ class Register extends Component {
                             onChange={(event, newValue) => this.setState({ referral: newValue })}
                         />
                         <br />
-                        <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
-                    </div>
+                        <RaisedButton label="Submit" type="submit" primary={true} style={style} />
+                    </form>
                 </MuiThemeProvider>
             </div >
         );

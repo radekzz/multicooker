@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 import Create from './components/Create';
 import Edit from './components/Edit';
@@ -22,13 +23,28 @@ class App extends Component {
   }
   componentWillMount() {
     var loginPage = [];
+
     loginPage.push(<Loginscreen parentContext={this} />);
     this.setState({
       loginPage: loginPage
     })
   }
-
   render() {
+    const cookies = new Cookies();
+    const isLoggedIn = cookies.get('isAuthenticated');
+    let loginLogout;
+    if (isLoggedIn === "true") {
+      const userData = cookies.get('user');
+      loginLogout = <li className="nav-item"><Link to={'/login'} className="nav-link">Logout</Link></li>;
+    } else {
+      loginLogout = <React.Fragment><li className="nav-item">
+        <Link to={'/register'} className="nav-link">Register</Link>
+      </li>
+        <li className="nav-item">
+          <Link to={'/login'} className="nav-link">Login</Link>
+        </li></React.Fragment>;
+    }
+
     return (
       <Router>
         <div className="container">
@@ -48,18 +64,11 @@ class App extends Component {
                 <li className="nav-item">
                   |
                 </li>
-                <li className="nav-item">
-                  <Link to={'/register'} className="nav-link">Register</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/login'} className="nav-link">Login</Link>
-                </li>
+                {loginLogout}
               </ul>
             </div>
           </nav> <br />
           <h2>Welcome to React CRUD Tutorial</h2> <br />
-          {this.state.loginPage}
-          {this.state.uploadScreen}
           <br />
           <Switch>
             <Route path="/" exact component={Index} />

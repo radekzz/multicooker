@@ -4,6 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 class Login extends Component {
     constructor(props) {
@@ -24,15 +25,18 @@ class Login extends Component {
         axios.post(apiBaseUrl + 'login', payload)
             .then(function (response) {
                 console.log(response);
-                if (response.status == 200) {
+                const cookies = new Cookies();
+                if (response.data.isAuthenticated === true) {
                     console.log("Login successfull");
-                    /*var uploadScreen = [];
-                    uploadScreen.push(<UploadScreen appContext={self.props.appContext} />)
-                    self.props.appContext.setState({ loginPage: [], uploadScreen: uploadScreen })**/
+                    console.log()
+                    cookies.set('user', response.data.user, { path: '/', expires: new Date(Date.now() + 2592000) });
+                    cookies.set('isAuthenticated', true, { path: '/', expires: new Date(Date.now() + 2592000) });
+                    console.log(cookies.get('user'));
                 } else {
-                    console.log(response.status);
-                    console.log("Username does not exists");
-                    //alert("Username does not exist");
+                    console.log("Username or Password doesn't match");
+                    cookies.set('user', response.data.user, { path: '/', expires: new Date(Date.now() + 2592000) });
+                    cookies.set('isAuthenticated', false, { path: '/', expires: new Date(Date.now() + 2592000) });
+                    console.log(cookies.get('user'));
                 }
             })
             .catch(function (error) {
@@ -50,12 +54,14 @@ class Login extends Component {
                             title="Login"
                         />
                         <TextField
+                            required
                             hintText="Enter your Username"
                             floatingLabelText="Username"
                             onChange={(event, newValue) => this.setState({ username: newValue })}
                         />
                         <br />
                         <TextField
+                            required
                             type="password"
                             hintText="Enter your Password"
                             floatingLabelText="Password"

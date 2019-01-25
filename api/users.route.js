@@ -8,70 +8,38 @@ let Users = require('./users.model');
 
 // Defined store route
 usersRoutes.route('/register').post(function (req, res) {
-  let users = new Users(req.body);
-  users.save()
-    .then(users => {
-      res.status(200).json({ 'users': 'users in added successfully' });
-    })
-    .catch(err => {
-      res.status(400).send("unable to save to database");
-    });
-});
-
-// Defined get data(index or listing) route
-/*usersRoutes.route('/').get(function (req, res) {
-  Users.find(function (err, userses) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      res.json(userses);
+  Users.findOne({ username: req.body.username }, function (err, users) {
+    if (users) {
+      res.status(204).json({
+        'users': 'username already exist'
+      });
+    } else {
+      let users = new Users(req.body);
+      users.save()
+        .then(business => {
+          res.status(200).json({ 'users': 'User has been registered' });
+        })
+        .catch(err => {
+          res.status(204).send("Unable to save to database");
+        });
     }
   });
-});*/
+});
 
 usersRoutes.route('/login').post(function (req, res) {
   Users.findOne(req.body, function (err, users) {
-    console.log(req.body);
-    const { password } = req.body;
-    const { username } = req.body;
-    console.log(username);
     if (users) {
-      console.log(users);
       res.status(200).json({
-        'users': 'user authenticated'
+        'user': users._id,
+        'isAuthenticated': true
       });
     } else {
-      console.log("Wrong username or password");
-      res.status(400).json({
-        'users': 'user sucks'
+      res.status(200).json({
+        'user': false,
+        'isAuthenticated': false
       });
     }
   });
-  /*Users.findById(req.params.id, function (err, users) {
-    console.log(req.body);
-    const { body } = req;
-    const { password } = body;
-    let { username } = body;
-    if (!username) {
-      console.log("no username");
-      return res.send({
-        success: false,
-        message: 'Error: Email cannot be blank.'
-      });
-    } else {
-      res.status(200).json({ 'users': 'users in added successfully' });
-    }
-    if (!password) {
-      console.log("no password");
-      return res.send({
-        success: false,
-        message: 'Error: Password cannot be blank.'
-      });
-    } else {
-      res.status(200).json({ 'users': 'users in added successfully' });
-    }
-  });*/
 });
 
 // Defined edit route
