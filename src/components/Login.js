@@ -32,6 +32,7 @@ class Login extends Component {
                     cookies.set('user', response.data.user, { path: '/', expires: new Date(Date.now() + 2592000) });
                     cookies.set('isAuthenticated', true, { path: '/', expires: new Date(Date.now() + 2592000) });
                     console.log(cookies.get('user'));
+                    this.setState({ isloggedIn: true })
                 } else {
                     console.log("Username or Password doesn't match");
                     cookies.set('user', response.data.user, { path: '/', expires: new Date(Date.now() + 2592000) });

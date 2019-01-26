@@ -26,16 +26,36 @@ class App extends Component {
 
     loginPage.push(<Loginscreen parentContext={this} />);
     this.setState({
-      loginPage: loginPage
+      loginPage: loginPage,
+      isLoggedIn: false
     })
+
+    const cookies = new Cookies();
+    const auth = cookies.get('isAuthenticated');
+    if (auth === "true") {
+      this.setState({ isLoggedIn: true });
+    } else {
+      this.setState({ isLoggedIn: false });
+    }
+  }
+
+  handleClick(event) {
+    const cookies = new Cookies();
+    const auth = cookies.get('isAuthenticated');
+    if (auth === "true") {
+      this.setState({ isLoggedIn: false });
+      cookies.remove('user');
+      cookies.remove('isAuthenticated');
+    } else {
+      console.log("User is not logged in anyway");
+    }
   }
   render() {
     const cookies = new Cookies();
-    const isLoggedIn = cookies.get('isAuthenticated');
     let loginLogout;
-    if (isLoggedIn === "true") {
+    if (this.state.isLoggedIn) {
       const userData = cookies.get('user');
-      loginLogout = <li className="nav-item"><Link to={'/login'} className="nav-link">Logout</Link></li>;
+      loginLogout = <li className="nav-item"><Link to={'/login'} className="nav-link" onClick={(event) => this.handleClick(event)}>Logout</Link></li>;
     } else {
       loginLogout = <React.Fragment><li className="nav-item">
         <Link to={'/register'} className="nav-link">Register</Link>
