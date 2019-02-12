@@ -20,6 +20,7 @@ class App extends Component {
       loginPage: [],
       uploadScreen: []
     }
+    this.isAuth = this.isAuth.bind(this)
   }
   componentWillMount() {
     var loginPage = [];
@@ -29,7 +30,10 @@ class App extends Component {
       loginPage: loginPage,
       isLoggedIn: false
     })
+    this.isAuth()
+  }
 
+  isAuth() {
     const cookies = new Cookies();
     const auth = cookies.get('isAuthenticated');
     if (auth === "true") {
@@ -96,7 +100,14 @@ class App extends Component {
             <Route exact path='/create' component={Create} />
             <Route path='/edit/:id' component={Edit} />
             <Route path='/register' component={Register} />
-            <Route path='/login' component={Login} />
+            <Route path='/login'
+              render={props => (
+                <Login
+                  {...props}
+                  isLoggedIn={this.state.isLoggedIn}
+                  isAuth={this.isAuth}
+                />
+              )} />
           </Switch>
         </div>
       </Router>
