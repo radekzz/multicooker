@@ -59,6 +59,7 @@ class App extends Component {
     let loginLogout;
     if (this.state.isLoggedIn) {
       const userData = cookies.get('user');
+      console.log(userData)
       loginLogout = <li className="nav-item"><Link to={'/login'} className="nav-link" onClick={(event) => this.handleClick(event)}>Logout</Link></li>;
     } else {
       loginLogout = <React.Fragment><li className="nav-item">

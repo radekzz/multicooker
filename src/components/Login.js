@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -18,7 +18,6 @@ class Login extends Component {
 
     handleClick(event) {
         var apiBaseUrl = "http://localhost:4000/users/";
-        var self = this;
         var payload = {
             "username": this.state.username,
             "password": this.state.password

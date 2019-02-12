@@ -4,7 +4,6 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
-import Login from './Login';
 
 class Register extends Component {
     constructor(props) {
@@ -22,7 +21,6 @@ class Register extends Component {
         event.preventDefault();
         var apiBaseUrl = "http://localhost:4000/users/";
         //To be done:check for empty values before hitting submit
-        var self = this;
         var payload = {
             "username": this.state.username,
             "paypal": this.state.paypal,
@@ -34,7 +32,7 @@ class Register extends Component {
         axios.post(apiBaseUrl + '/register', payload)
             .then(function (response) {
                 console.log(response);
-                if (response.status == 200) {
+                if (response.status === 200) {
                     console.log("Registration successfull");
                 } else {
                     console.log("Username already exist");
