@@ -12,11 +12,16 @@
     "react-scripts": "2.1.1",
     "universal-cookie": "^3.0.7"
   },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev:api": "cd api && nodemon server",
+    "dev": "concurrently --kill-others-on-fail \"yarn dev:api\" \"yarn start\""
   },
   "eslintConfig": {
     "extends": "react-app"
